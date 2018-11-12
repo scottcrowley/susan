@@ -22,3 +22,17 @@ $factory->define(App\User::class, function (Faker $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(App\Rarity::class, function (Faker $faker) {
+    return [
+        'name' => $faker->unique()->randomElement(['Common', 'Uncommon', 'Rare', 'Epic', 'Legandary']),
+    ];
+});
+
+$factory->define(App\Card::class, function (Faker $faker) {
+    return [
+        'name' => $faker->name,
+        'health' => $faker->numberBetween(1, 1000),
+        'damage' => $faker->numberBetween(1, 1000),
+    ];
+});
