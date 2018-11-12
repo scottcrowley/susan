@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Laravel') }} - Admin Panel</title>
 
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
@@ -15,12 +15,12 @@
 </head>
 <body class="bg-blue-lightest h-screen antialiased">
     <div id="app">
-        <nav class="bg-white h-12 shadow mb-8 px-6 md:px-0">
-            <div class="container mx-auto h-full">
-                <div class="flex items-center justify-center h-12">
+        <nav class="bg-white h-13 shadow mb-8 px-6 md:px-0">
+            <div class="container mx-auto h-full flex flex-col content-around">
+                <div class="flex items-center justify-center pt-3">
                     <div class="mr-6">
-                        <a href="{{ url('/') }}" class="text-lg font-hairline text-grey-darkest no-underline hover:underline">
-                            {{ config('app.name', 'Laravel') }}
+                        <a href="{{ route('admin.index') }}" class="text-lg font-hairline text-grey-darkest no-underline hover:underline">
+                            {{ config('app.name', 'Laravel') }} - Admin Panel
                         </a>
                     </div>
                     <div class="flex-1 text-right">
@@ -39,6 +39,11 @@
                             </form>
                         @endguest
                     </div>
+                </div>
+                <div class="flex item-end justify-center">
+                    <a class="no-underline hover:underline text-grey-darker pr-3 text-sm" href="#">Cards</a>
+                    <a class="no-underline hover:underline text-grey-darker pr-3 text-sm" href="#">Power-Ups</a>
+                    <a class="no-underline hover:underline text-grey-darker pr-3 text-sm" href="#">Rarity</a>
                 </div>
             </div>
         </nav>
