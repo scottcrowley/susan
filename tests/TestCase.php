@@ -7,4 +7,18 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
+
+    protected function setUp()
+    {
+        parent::setUp();
+    }
+
+    protected function signIn($user = null)
+    {
+        $user = $user ?: factory('App\User')->create();
+
+        $this->actingAs($user);
+
+        return $this;
+    }
 }

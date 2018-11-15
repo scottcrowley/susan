@@ -15,12 +15,13 @@ class CreateCardsTable extends Migration
     {
         Schema::create('cards', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('rarity_id')->nullable();
+            $table->unsignedInteger('user_id')->index();
+            $table->unsignedInteger('rarity_id')->index();
+            $table->unsignedInteger('power_id')->index();
             $table->string('name')->unique();
-            $table->integer('health')->default(0);
-            $table->integer('damage')->default(0);
+            $table->unsignedInteger('health')->default(0);
+            $table->unsignedInteger('damage')->default(0);
             $table->string('image')->nullable();
-            $table->unsignedInteger('powerup_id')->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
         });

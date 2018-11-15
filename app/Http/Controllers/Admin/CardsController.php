@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Card;
+use App\Rules\Positive;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -36,13 +37,12 @@ class CardsController extends Controller
     public function store()
     {
         $data = request()->validate([
-            'name' => 'required',
-            'health' => 'required',
-            'damage' => 'required',
+            'name' => 'required|unique:cards',
+            'health' => ['required', 'integer', new Positive],
+            'damage' => ['required', 'integer', new Positive],
             'rarity_id' => 'required',
             'power_id' => 'required',
-            'image' => 'nullable',
-            'active' => 'required'
+            'image' => 'nullable'
         ]);
 
         $card = Card::create($data + ['user_id' => auth()->id()]);

@@ -29,10 +29,26 @@ $factory->define(App\Rarity::class, function (Faker $faker) {
     ];
 });
 
+$factory->define(App\Power::class, function (Faker $faker) {
+    return [
+        'name' => $faker->unique()->name,
+        'description' => $faker->sentence(),
+    ];
+});
+
 $factory->define(App\Card::class, function (Faker $faker) {
     return [
+        'user_id' => auth()->id(),
         'name' => $faker->name,
+        'power_id' => function () {
+            return factory('App\Power')->create()->id;
+        },
+        'rarity_id' => function () {
+            return factory('App\Rarity')->create()->id;
+        },
         'health' => $faker->numberBetween(1, 1000),
         'damage' => $faker->numberBetween(1, 1000),
+        'image' => '',
+        'active' => true
     ];
 });
