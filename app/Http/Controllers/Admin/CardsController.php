@@ -16,7 +16,9 @@ class CardsController extends Controller
      */
     public function index()
     {
-        //
+        $cards = Card::orderBy('name')->get();
+
+        return view('admin.cards.index', compact('cards'));
     }
 
     /**
@@ -26,7 +28,7 @@ class CardsController extends Controller
      */
     public function create()
     {
-        return view('admin.cards.create');
+        return view('admin.cards.create', ['card' => new Card]);
     }
 
     /**
@@ -47,56 +49,81 @@ class CardsController extends Controller
 
         $card = Card::create($data + ['user_id' => auth()->id()]);
 
+        session()->flash('The card has been added successfully!');
+
         if (request()->wantsJson()) {
             return response($card, 201);
         }
 
-        return redirect(route('admin.cards.index'))
-            ->with('flash', 'The card has been added successfully');
+        return redirect(route('admin.cards.index'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Card  $card
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Card $card)
     {
-        //
+        return view('admin.cards.show', compact('card'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  Card  $card
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Card $card)
     {
-        //
+        return view('admin.cards.edit', compact('card'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Card  $card
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Card $card)
     {
-        //
+        $card->update(
+            request()->validate([
+                'name' => 'required|unique:cards',
+                'health' => ['required', 'integer', new Positive],
+                'damage' => ['required', 'integer', new Positive],
+                'rarity_id' => 'required',
+                'power_id' => 'required',
+                'image' => 'nullable'
+            ])
+        );
+
+        session()->flash('The card was successfully updated!');
+
+        if (request()->wantsJson()) {
+            return response($card, 200);
+        }
+
+        return redirect(route('admin.cards.index'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Card  $card
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Card $card)
     {
-        //
+        $card->delete();
+
+        session()->flash('The card was deleted successfully!');
+
+        if (request()->wantsJson()) {
+            return response([], 204);
+        }
+
+        return redirect(route('admin.cards.index'));
     }
 }

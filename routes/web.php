@@ -30,17 +30,23 @@ Route::group([
     Route::get('/cards/create', 'CardsController@create')->name('admin.cards.create');
     Route::post('/cards', 'CardsController@store')->name('admin.cards.store');
     Route::get('/cards/{card}', 'CardsController@show')->name('admin.cards.show');
-    Route::post('/cards/{card}', 'CardsController@update')->name('admin.cards.update');
+    Route::get('/cards/{card}/edit', 'CardsController@edit')->name('admin.cards.edit');
+    Route::patch('/cards/{card}', 'CardsController@update')->name('admin.cards.update');
+    Route::delete('/cards/{card}', 'CardsController@destroy')->name('admin.cards.delete');
 
     Route::get('/powers', 'PowersController@index')->name('admin.powers.index');
     Route::get('/powers/create', 'PowersController@create')->name('admin.powers.create');
     Route::post('/powers', 'PowersController@store')->name('admin.powers.store');
     Route::get('/powers/{power}', 'PowersController@show')->name('admin.powers.show');
-    Route::post('/powers/{power}', 'PowersController@update')->name('admin.powers.update');
+    Route::get('/powers/{power}/edit', 'PowersController@edit')->name('admin.powers.edit');
+    Route::patch('/powers/{power}', 'PowersController@update')->name('admin.powers.update');
+    Route::delete('/powers/{power}', 'PowersController@destroy')->name('admin.powers.delete');
 
     Route::get('/rarities', 'RaritiesController@index')->name('admin.rarities.index');
     Route::get('/rarities/create', 'RaritiesController@create')->name('admin.rarities.create');
     Route::post('/rarities', 'RaritiesController@store')->name('admin.rarities.store');
     Route::get('/rarities/{rarity}', 'RaritiesController@show')->name('admin.rarities.show');
-    Route::post('/rarities/{rarity}', 'RaritiesController@update')->name('admin.rarities.update');
+    Route::get('/rarities/{rarity}/edit', 'RaritiesController@edit')->name('admin.rarities.edit');
+    Route::patch('/rarities/{rarity}', 'RaritiesController@update')->name('admin.rarities.update');
+    Route::delete('/rarities/{rarity}', 'raritiesController@destroy')->name('admin.rarities.delete');
 });

@@ -7,12 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 class Rarity extends Model
 {
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = [];
+
+    /**
      * A rarity belongs to many cards
      *
      * @return belongsToMany
      */
     public function cards()
     {
-        return $this->belongsToMany(Card::class);
+        return $this->hasMany(Card::class);
     }
 }

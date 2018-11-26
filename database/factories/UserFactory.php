@@ -1,5 +1,6 @@
 <?php
 
+use App\Rarity;
 use Faker\Generator as Faker;
 
 /*
@@ -38,13 +39,19 @@ $factory->define(App\Power::class, function (Faker $faker) {
 
 $factory->define(App\Card::class, function (Faker $faker) {
     return [
-        'user_id' => auth()->id(),
+        'user_id' => function () {
+            return factory('App\User')->create()->id;
+        },
         'name' => $faker->name,
         'power_id' => function () {
             return factory('App\Power')->create()->id;
         },
         'rarity_id' => function () {
             return factory('App\Rarity')->create()->id;
+        // $rarities = Rarity::all()->toArray();
+            // $k = rand(0, (count($rarities) - 1));
+
+            // return $rarities[$k]['id'];
         },
         'health' => $faker->numberBetween(1, 1000),
         'damage' => $faker->numberBetween(1, 1000),

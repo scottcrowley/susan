@@ -30,6 +30,16 @@ class Card extends Model
     protected $with = ['rarity', 'power'];
 
     /**
+     * A card belongs to one creator
+     *
+     * @return belongsTo
+     */
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
      * A card has one rarity
      *
      * @return belongsTo

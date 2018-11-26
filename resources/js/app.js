@@ -16,6 +16,8 @@ require('./bootstrap');
  */
 
 Vue.component("flash", require("./components/Flash.vue"));
+Vue.component("dropdown", require("./components/Dropdown.vue"));
+Vue.component("delete-confirm-button", require("./components/DeleteConfirmButton.vue"));
 
 // const files = require.context('./', true, /\.vue$/i)
 
