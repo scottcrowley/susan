@@ -14,7 +14,7 @@ class CardsTest extends TestCase
     {
         $this->signIn();
 
-        $card = factory('App\Card')->make();
+        $card = make('App\Card');
 
         $this->post(route('admin.cards.store'), $card->toArray());
 
@@ -26,14 +26,14 @@ class CardsTest extends TestCase
     {
         $this->signIn();
 
-        $card = factory('App\Card', ['name' => ''])->make();
+        $card = make('App\Card', ['name' => '']);
 
         $this->post(route('admin.cards.store'), $card->toArray())
             ->assertSessionHasErrors('name');
 
         $card->name = 'Card 1';
 
-        $card_test = factory('App\Card', ['name' => 'Card 1'])->create();
+        $card_test = create('App\Card', ['name' => 'Card 1']);
 
         $this->post(route('admin.cards.store'), $card->toArray())
             ->assertSessionHasErrors('name');
@@ -44,7 +44,7 @@ class CardsTest extends TestCase
     {
         $this->signIn();
 
-        $card = factory('App\Card')->create();
+        $card = create('App\Card');
 
         $this->get(route('admin.cards.show', $card->id))
             ->assertSee($card->name)
@@ -57,7 +57,7 @@ class CardsTest extends TestCase
     {
         $this->signIn();
 
-        $card = factory('App\Card')->create();
+        $card = create('App\Card');
 
         $this->get(route('admin.cards.edit', $card->id))
             ->assertSee($card->name)
@@ -69,7 +69,7 @@ class CardsTest extends TestCase
     {
         $this->signIn();
 
-        $card = factory('App\Card')->create();
+        $card = create('App\Card', ['damage' => 100]);
 
         $card->name = 'New Card Name';
 
@@ -77,6 +77,21 @@ class CardsTest extends TestCase
 
         $this->get(route('admin.cards.show', $card->id))
             ->assertSee('New Card Name');
+
+        $card->damage = 1000;
+    }
+
+    /** @test */
+    public function a_card_can_be_updated_with_the_same_name()
+    {
+        $this->signIn();
+
+        $card = create('App\Card', ['damage' => 100]);
+
+        $card->damage = 1000;
+
+        $this->json('patch', route('admin.cards.update', $card->id), $card->toArray())
+            ->assertStatus(200);
     }
 
     /** @test */
@@ -84,11 +99,29 @@ class CardsTest extends TestCase
     {
         $this->signIn();
 
-        $card = factory('App\Card')->create();
+        $card = create('App\Card');
 
         $this->json('DELETE', route('admin.cards.delete', $card->id))
             ->assertStatus(204);
 
         $this->assertDatabaseMissing('cards', ['id' => $card->id]);
+    }
+
+    /** @test */
+    public function a_user_can_only_edit_a_card_if_they_created_it()
+    {
+        $this->signIn();
+
+        $user = create('App\User');
+
+        $card = create('App\Card', ['name' => 'This is my card', 'user_id' => $user->id]);
+
+        $card->name = 'This is now my card';
+
+        $this->json('get', route('admin.cards.edit', $card->id))
+            ->assertStatus(403);
+
+        $this->json('patch', route('admin.cards.update', $card->id), $card->toArray())
+            ->assertStatus(403);
     }
 }

@@ -30,9 +30,9 @@ Route::group([
     Route::get('/cards/create', 'CardsController@create')->name('admin.cards.create');
     Route::post('/cards', 'CardsController@store')->name('admin.cards.store');
     Route::get('/cards/{card}', 'CardsController@show')->name('admin.cards.show');
-    Route::get('/cards/{card}/edit', 'CardsController@edit')->name('admin.cards.edit');
-    Route::patch('/cards/{card}', 'CardsController@update')->name('admin.cards.update');
-    Route::delete('/cards/{card}', 'CardsController@destroy')->name('admin.cards.delete');
+    Route::get('/cards/{card}/edit', 'CardsController@edit')->name('admin.cards.edit')->middleware('can:update,card');
+    Route::patch('/cards/{card}', 'CardsController@update')->name('admin.cards.update')->middleware('can:update,card');
+    Route::delete('/cards/{card}', 'CardsController@destroy')->name('admin.cards.delete')->middleware('can:update,card');
 
     Route::get('/powers', 'PowersController@index')->name('admin.powers.index');
     Route::get('/powers/create', 'PowersController@create')->name('admin.powers.create');

@@ -9,7 +9,7 @@
             </div>
             <div class="bg-white p-3 rounded-b">
                 <form class="form-horizontal" method="POST" action="{{ route('admin.cards.store') }}">
-                    @include('admin.cards._form')
+                    @include('admin.cards._form', ['formType' => 'create'])
                 </form>
             </div>
         </div>

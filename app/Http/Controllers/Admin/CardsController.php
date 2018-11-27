@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Card;
+use App\Power;
+use App\Rarity;
 use App\Rules\Positive;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 
 class CardsController extends Controller
@@ -28,7 +31,10 @@ class CardsController extends Controller
      */
     public function create()
     {
-        return view('admin.cards.create', ['card' => new Card]);
+        $powers = Power::orderBy('name')->get();
+        $rarities = Rarity::orderBy('level')->get();
+        $card = new Card;
+        return view('admin.cards.create', compact('card', 'powers', 'rarities'));
     }
 
     /**
@@ -49,7 +55,7 @@ class CardsController extends Controller
 
         $card = Card::create($data + ['user_id' => auth()->id()]);
 
-        session()->flash('The card has been added successfully!');
+        session()->flash('flash', 'The card has been added successfully!');
 
         if (request()->wantsJson()) {
             return response($card, 201);
@@ -77,7 +83,10 @@ class CardsController extends Controller
      */
     public function edit(Card $card)
     {
-        return view('admin.cards.edit', compact('card'));
+        $powers = Power::orderBy('name')->get();
+        $rarities = Rarity::orderBy('level')->get();
+
+        return view('admin.cards.edit', compact('card', 'powers', 'rarities'));
     }
 
     /**
@@ -90,7 +99,7 @@ class CardsController extends Controller
     {
         $card->update(
             request()->validate([
-                'name' => 'required|unique:cards',
+                'name' => ['required', Rule::unique('cards')->ignore($card->id)],
                 'health' => ['required', 'integer', new Positive],
                 'damage' => ['required', 'integer', new Positive],
                 'rarity_id' => 'required',
@@ -99,13 +108,13 @@ class CardsController extends Controller
             ])
         );
 
-        session()->flash('The card was successfully updated!');
+        session()->flash('flash', 'The card was successfully updated!');
 
         if (request()->wantsJson()) {
             return response($card, 200);
         }
 
-        return redirect(route('admin.cards.index'));
+        return redirect(route('admin.cards.show', $card->id));
     }
 
     /**
@@ -118,7 +127,7 @@ class CardsController extends Controller
     {
         $card->delete();
 
-        session()->flash('The card was deleted successfully!');
+        session()->flash('flash', 'The card was deleted successfully!');
 
         if (request()->wantsJson()) {
             return response([], 204);

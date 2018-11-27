@@ -9,8 +9,9 @@
             </div>
             <div class="bg-white p-3 rounded-b">
                 <form class="form-horizontal" method="POST" action="{{ route('admin.cards.update', [ 'card' => $card->id]) }}">
+                    {{ csrf_field() }}
                     {{ method_field('PATCH') }}
-                    @include('admin.cards._form', [ 'btnText' => 'Update Card'])
+                    @include('admin.cards._form', ['btnText' => 'Update Card', 'formType' => 'edit'])
                 </form>
             </div>
         </div>

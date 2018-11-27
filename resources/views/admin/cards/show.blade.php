@@ -13,13 +13,18 @@
                 <p class="mb-2 text-grey-darkest">Power: {{ $card->power->name }}</p>
                 <p class="mb-2 text-grey-darkest">Rarity: {{ $card->rarity->name }}</p>
             </div>
-            <div class="border-t flex justify-between bg-white py-4 px-8 rounded-b">
-                <button class="btn is-blue">Edit</button>
-                <delete-confirm-button classes="btn" label="Delete" :data-set="{{ $card }}">
-                    <span slot="title">Are you sure?</span>
-                    Are you sure you want to do delete this card? This action is not undoable.
-                </delete-confirm-button>
-            </div>
+            @can ('update', $card)
+                <div class="border-t flex justify-between bg-white py-4 px-8 rounded-b">
+                    <form action="{{ route('admin.cards.edit', $card->id) }}" method="GET">
+                        {{ csrf_field() }}
+                        <button type="submit" class="btn is-blue">Edit</button>
+                    </form>
+                    <delete-confirm-button classes="btn" label="Delete" :data-set="{{ $card }}">
+                        <span slot="title">Are you sure?</span>
+                        Are you sure you want to do delete this card? This action is not undoable.
+                    </delete-confirm-button>
+                </div>
+            @endcan
         </div>
     </div>
 </div>

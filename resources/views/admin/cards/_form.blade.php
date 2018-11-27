@@ -24,18 +24,48 @@
     </div>
 </div>
 
-<div class="field-group">
-    <label for="name">Rarity</label>
+<div class="field-group items-center">
+    <label for="name" style="padding-top: 0;">Rarity</label>
     <div class="field">
-        <input id="rarity_id" type="text" class="{{ $errors->has('rarity_id') ? 'border-red-dark' : 'border-grey-light' }}" name="rarity_id" value="{{ old('rarity_id', $card->rarity_id) }}" required>
+        {{-- <input id="rarity_id" type="text" class="{{ $errors->has('rarity_id') ? 'border-red-dark' : 'border-grey-light' }}" name="rarity_id" value="{{ old('rarity_id', $card->rarity_id) }}" required> --}}
+        <div class="relative">
+            <select name="rarity_id" id="rarity_id" 
+                class="block appearance-none w-full bg-grey-lighter border border-grey-light text-grey-darker py-1 px-2 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-grey" 
+                required>
+                <option value="">Choose a rarity</option>
+                @foreach ($rarities as $rarity)
+                    <option value="{{ $rarity->id }}" {{ (($formType == 'create' && old('rarity_id') == $rarity->id) || ($formType == 'edit' && $card->rarity->id == $rarity->id)) ? 'selected' : '' }}>{{ $rarity->name }}</option>
+                @endforeach
+            </select>
+            <div class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-grey-darker">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="fill-current h-4 w-4">
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path>
+                </svg>
+            </div>
+        </div>
         {!! $errors->first('rarity_id', '<span class="danger">:message</span>') !!}
     </div>
 </div>
 
-<div class="field-group">
-    <label for="name">Power</label>
+<div class="field-group items-center">
+    <label for="name" style="padding-top: 0;">Power</label>
     <div class="field">
-        <input id="power_id" type="text" class="{{ $errors->has('power_id') ? 'border-red-dark' : 'border-grey-light' }}" name="power_id" value="{{ old('power_id', $card->power_id) }}" required>
+        {{-- <input id="power_id" type="text" class="{{ $errors->has('power_id') ? 'border-red-dark' : 'border-grey-light' }}" name="power_id" value="{{ old('power_id', $card->power_id) }}" required> --}}
+        <div class="relative">
+            <select name="power_id" id="power_id" 
+                class="block appearance-none w-full bg-grey-lighter border border-grey-light text-grey-darker py-1 px-2 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-grey"
+                required>
+                <option value="">Choose a power</option>
+                @foreach ($powers as $power)
+                    <option value="{{ $power->id }}" {{ (($formType == 'create' && old('power_id') == $power->id) || ($formType == 'edit' && $card->power->id == $power->id)) ? 'selected' : '' }}>{{ $power->name }}</option>
+                @endforeach
+            </select>
+            <div class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-grey-darker">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="fill-current h-4 w-4">
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path>
+                </svg>
+            </div>
+        </div>
         {!! $errors->first('power_id', '<span class="danger">:message</span>') !!}
     </div>
 </div>
