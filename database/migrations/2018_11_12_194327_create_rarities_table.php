@@ -15,7 +15,8 @@ class CreateRaritiesTable extends Migration
     {
         Schema::create('rarities', function (Blueprint $table) {
             $table->increments('id');
-            $table->enum('name', ['Common', 'Uncommon', 'Rare', 'Epic', 'Legandary'])->default('Common')->unique();
+            $table->enum('name', ['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary'])->default('Common')->unique();
+            $table->smallInteger('level');
             $table->timestamps();
         });
     }

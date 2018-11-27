@@ -25,8 +25,12 @@ $factory->define(App\User::class, function (Faker $faker) {
 });
 
 $factory->define(App\Rarity::class, function (Faker $faker) {
+    // $rarities = [['Common', 1], ['Uncommon', 2], ['Rare', 3], ['Epic', 4], ['Legendary', 5]];
+    // $r = array_random($rarities);
+    $rarities = ['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary'];
     return [
-        'name' => $faker->unique()->randomElement(['Common', 'Uncommon', 'Rare', 'Epic', 'Legandary']),
+        'name' => $faker->unique()->randomElement($rarities),
+        'level' => $faker->numberBetween(1, 5)
     ];
 });
 
@@ -48,14 +52,19 @@ $factory->define(App\Card::class, function (Faker $faker) {
         },
         'rarity_id' => function () {
             return factory('App\Rarity')->create()->id;
-        // $rarities = Rarity::all()->toArray();
-            // $k = rand(0, (count($rarities) - 1));
-
-            // return $rarities[$k]['id'];
         },
         'health' => $faker->numberBetween(1, 1000),
         'damage' => $faker->numberBetween(1, 1000),
         'image' => '',
         'active' => true
+    ];
+});
+
+$factory->state(App\Card::class, 'mysql', function ($faker) {
+    $rarities = Rarity::all()->toArray();
+    $k = rand(0, (count($rarities) - 1));
+
+    return [
+        'rarity_id' => $rarities[$k]['id']
     ];
 });

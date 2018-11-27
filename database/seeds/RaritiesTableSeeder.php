@@ -12,11 +12,12 @@ class RaritiesTableSeeder extends Seeder
      */
     public function run()
     {
-        $types = ['common', 'epic', 'legendary', 'rare', 'uncommon'];
+        $types = [['common', 1], ['epic', 4], ['legendary', 5], ['rare', 3], ['uncommon', 2]];
 
-        foreach ($types as $name) {
+        foreach ($types as $type) {
             DB::table('rarities')->insert([
-                'name' => $name,
+                'name' => $type[0],
+                'level' => $type[1],
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
