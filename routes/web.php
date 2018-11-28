@@ -38,9 +38,9 @@ Route::group([
     Route::get('/powers/create', 'PowersController@create')->name('admin.powers.create');
     Route::post('/powers', 'PowersController@store')->name('admin.powers.store');
     Route::get('/powers/{power}', 'PowersController@show')->name('admin.powers.show');
-    Route::get('/powers/{power}/edit', 'PowersController@edit')->name('admin.powers.edit');
-    Route::patch('/powers/{power}', 'PowersController@update')->name('admin.powers.update');
-    Route::delete('/powers/{power}', 'PowersController@destroy')->name('admin.powers.delete');
+    Route::get('/powers/{power}/edit', 'PowersController@edit')->name('admin.powers.edit')->middleware('can:update,power');
+    Route::patch('/powers/{power}', 'PowersController@update')->name('admin.powers.update')->middleware('can:update,power');
+    Route::delete('/powers/{power}', 'PowersController@destroy')->name('admin.powers.delete')->middleware('can:update,power');
 
     Route::get('/rarities', 'RaritiesController@index')->name('admin.rarities.index');
     Route::get('/rarities/create', 'RaritiesController@create')->name('admin.rarities.create');

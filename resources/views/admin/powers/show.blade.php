@@ -5,23 +5,20 @@
     <div class="w-full max-w-md md:mx-auto">
         <div class="rounded shadow">
             <div class="font-medium text-lg text-white bg-blue p-3 rounded-t">
-                {{ $card->name }}
+                {{ $power->name }}
             </div>
             <div class="bg-white p-4">
-                <p class="mb-2 text-grey-darkest">Health: {{ $card->health }}</p>
-                <p class="mb-2 text-grey-darkest">Damage: {{ $card->damage }}</p>
-                <p class="mb-2 text-grey-darkest">Power: {{ $card->power->name }}</p>
-                <p class="mb-2 text-grey-darkest">Rarity: {{ $card->rarity->name }}</p>
+                <p class="mb-2 text-grey-darkest">Description: {{ $power->description }}</p>
             </div>
-            @can ('update', $card)
+            @can ('update', $power)
                 <div class="border-t flex justify-between bg-white py-4 px-8 rounded-b">
-                    <form action="{{ route('admin.cards.edit', $card->id) }}" method="GET">
+                    <form action="{{ route('admin.powers.edit', $power->id) }}" method="GET">
                         {{ csrf_field() }}
                         <button type="submit" class="btn is-blue">Edit</button>
                     </form>
-                    <delete-confirm-button classes="btn" label="Delete" table="cards" :data-set="{{ $card }}">
+                    <delete-confirm-button classes="btn" label="Delete" table="powers" :data-set="{{ $power }}">
                         <span slot="title">Are you sure?</span>
-                        Are you sure you want to do delete this card? This action is not undoable.
+                        Are you sure you want to do delete this power? This action is not undoable.
                     </delete-confirm-button>
                 </div>
             @endcan

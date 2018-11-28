@@ -5,12 +5,11 @@
     <div class="w-full max-w-md md:mx-auto">
         <div class="rounded shadow">
             <div class="font-medium text-lg text-white bg-blue p-3 rounded-t">
-                Update the {{ $card->name }} Card
+                Add a Susan Card Power
             </div>
             <div class="bg-white p-3 rounded-b">
-                <form class="form-horizontal" method="POST" action="{{ route('admin.cards.update', [ 'card' => $card->id]) }}">
-                    {{ method_field('PATCH') }}
-                    @include('admin.cards._form', ['btnText' => 'Update Card', 'formType' => 'edit'])
+                <form class="form-horizontal" method="POST" action="{{ route('admin.powers.store') }}">
+                    @include('admin.powers._form', ['formType' => 'create'])
                 </form>
             </div>
         </div>

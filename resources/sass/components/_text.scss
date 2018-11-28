@@ -25,3 +25,11 @@ ul.danger {
         @apply .text-red-dark .text-sm;
     }
 }
+
+.title {
+    @apply .text-lg .text-grey-darker mb-2;
+}
+
+p {
+    @apply .text-base .text-grey-dark;
+}

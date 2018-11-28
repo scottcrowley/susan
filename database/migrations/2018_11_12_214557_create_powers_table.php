@@ -15,6 +15,7 @@ class CreatePowersTable extends Migration
     {
         Schema::create('powers', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('user_id')->index();
             $table->string('name')->unique();
             $table->string('description');
             $table->timestamps();

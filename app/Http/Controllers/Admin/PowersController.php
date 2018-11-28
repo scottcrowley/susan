@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Power;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 
 class PowersController extends Controller
@@ -13,7 +15,9 @@ class PowersController extends Controller
      */
     public function index()
     {
-        //
+        $powers = Power::orderBy('name')->get();
+
+        return view('admin.powers.index', compact('powers'));
     }
 
     /**
@@ -23,7 +27,7 @@ class PowersController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.powers.create', ['power' => new Power]);
     }
 
     /**
@@ -33,51 +37,84 @@ class PowersController extends Controller
      */
     public function store()
     {
-        //
+        $data = request()->validate([
+            'name' => 'required',
+            'description' => 'required'
+        ]);
+
+        $power = Power::create($data + ['user_id' => auth()->id()]);
+
+        session()->flash('flash', 'The power has been added successfully!');
+
+        if (request()->wantsJson()) {
+            return response($power, 201);
+        }
+
+        return redirect(route('admin.powers.index'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Power  $power
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Power $power)
     {
-        //
+        return view('admin.powers.show', compact('power'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  Power  $power
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Power $power)
     {
-        //
+        return view('admin.powers.edit', compact('power'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Power  $power
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Power $power)
     {
-        //
+        $power->update(
+            request()->validate([
+                'name' => ['required', Rule::unique('powers')->ignore($power->id)],
+                'description' => 'required'
+            ])
+        );
+
+        session()->flash('flash', 'The power has been updated successfully!');
+
+        if (request()->wantsJson()) {
+            return response($power, 200);
+        }
+
+        return redirect(route('admin.powers.show', $power->id));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Power  $power
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Power $power)
     {
-        //
+        $power->delete();
+
+        session()->flash('flash', 'The power was deleted successfully!');
+
+        if (request()->wantsJson()) {
+            return response([], 204);
+        }
+
+        return redirect(route('admin.powers.index'));
     }
 }

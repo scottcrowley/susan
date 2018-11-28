@@ -31,7 +31,7 @@
 
 <script>
     export default {
-        props: ['classes', 'label', 'dataSet'],
+        props: ['classes', 'label', 'dataSet', 'table'],
 
         data() {
             return {
@@ -54,10 +54,10 @@
             },
 
             doDelete() {
-                axios.delete('/admin/cards/' + this.data.id)
-                    .then(function(response) {
+                axios.delete('/admin/' + this.table + '/' + this.data.id)
+                    .then(response => {
                         if (response.status == 204) {
-                            window.location.href = '/admin/cards';
+                            this.redirect();
                         }
                     })
                     .catch(function(error) {
@@ -78,6 +78,10 @@
                         }
                         console.log('Config', error.config);
                     });
+            },
+
+            redirect() {
+                window.location.href = '/admin/' + this.table;
             }
         }
     }

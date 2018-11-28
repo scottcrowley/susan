@@ -10,7 +10,18 @@ class CardsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function an_admin_can_create_a_new_card()
+    public function a_user_can_view_all_cards()
+    {
+        $this->signIn();
+
+        $card = create('App\Card');
+
+        $this->get(route('admin.cards.index'))
+            ->assertSee($card->name);
+    }
+
+    /** @test */
+    public function an_authenticated_user_can_create_a_new_card()
     {
         $this->signIn();
 
@@ -40,7 +51,7 @@ class CardsTest extends TestCase
     }
 
     /** @test */
-    public function a_card_can_be_shown()
+    public function a_user_can_view_a_card()
     {
         $this->signIn();
 
@@ -53,11 +64,11 @@ class CardsTest extends TestCase
     }
 
     /** @test */
-    public function a_card_can_be_edited()
+    public function a_user_can_edit_a_card_that_they_created()
     {
         $this->signIn();
 
-        $card = create('App\Card');
+        $card = create('App\Card', ['user_id' => auth()->id()]);
 
         $this->get(route('admin.cards.edit', $card->id))
             ->assertSee($card->name)
@@ -65,11 +76,11 @@ class CardsTest extends TestCase
     }
 
     /** @test */
-    public function a_card_can_be_updated()
+    public function a_user_can_update_a_card_that_they_created()
     {
         $this->signIn();
 
-        $card = create('App\Card', ['damage' => 100]);
+        $card = create('App\Card', ['user_id' => auth()->id(), 'name' => 'Card Name']);
 
         $card->name = 'New Card Name';
 
@@ -82,33 +93,7 @@ class CardsTest extends TestCase
     }
 
     /** @test */
-    public function a_card_can_be_updated_with_the_same_name()
-    {
-        $this->signIn();
-
-        $card = create('App\Card', ['damage' => 100]);
-
-        $card->damage = 1000;
-
-        $this->json('patch', route('admin.cards.update', $card->id), $card->toArray())
-            ->assertStatus(200);
-    }
-
-    /** @test */
-    public function a_card_can_be_deleted()
-    {
-        $this->signIn();
-
-        $card = create('App\Card');
-
-        $this->json('DELETE', route('admin.cards.delete', $card->id))
-            ->assertStatus(204);
-
-        $this->assertDatabaseMissing('cards', ['id' => $card->id]);
-    }
-
-    /** @test */
-    public function a_user_can_only_edit_a_card_if_they_created_it()
+    public function a_user_cannot_update_a_card_they_did_not_create()
     {
         $this->signIn();
 
@@ -122,6 +107,43 @@ class CardsTest extends TestCase
             ->assertStatus(403);
 
         $this->json('patch', route('admin.cards.update', $card->id), $card->toArray())
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    public function a_card_can_be_updated_with_the_same_name()
+    {
+        $this->signIn();
+
+        $card = create('App\Card', ['user_id' => auth()->id(), 'damage' => 100]);
+
+        $card->damage = 1000;
+
+        $this->json('patch', route('admin.cards.update', $card->id), $card->toArray())
+            ->assertStatus(200);
+    }
+
+    /** @test */
+    public function a_user_can_delete_a_card_that_they_created()
+    {
+        $this->signIn();
+
+        $card = create('App\Card', ['user_id' => auth()->id()]);
+
+        $this->json('delete', route('admin.cards.delete', $card->id))
+            ->assertStatus(204);
+
+        $this->assertDatabaseMissing('cards', ['id' => $card->id]);
+    }
+
+    /** @test */
+    public function a_user_cannot_delete_a_card_they_did_not_create()
+    {
+        $this->signIn();
+
+        $card = create('App\Card');
+
+        $this->json('delete', route('admin.cards.delete', $card->id))
             ->assertStatus(403);
     }
 }
