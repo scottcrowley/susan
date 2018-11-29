@@ -26,10 +26,18 @@ ul.danger {
     }
 }
 
-.title {
-    @apply .text-lg .text-grey-darker mb-2;
-}
-
 p {
     @apply .text-base .text-grey-dark;
+}
+
+.title {
+    @apply .text-lg .text-grey-darker mb-2;
+
+    & a {
+        @apply .no-underline .text-grey-darker;
+
+        &:hover {
+           @apply .underline; 
+        }
+    }
 }

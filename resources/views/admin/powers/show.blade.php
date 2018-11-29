@@ -9,6 +9,20 @@
             </div>
             <div class="bg-white p-4">
                 <p class="mb-2 text-grey-darkest">Description: {{ $power->description }}</p>
+                <div class="flex">
+                   <p class="mb-2 text-grey-darkest mr-2">Cards using:</p>
+                   <div class="flex-1">
+                        @if (count($cards))
+                            @foreach ($cards as $card)
+                                <p class="mb-1">
+                                    <a href="{{ route('admin.cards.show', $card->id) }}" class="no-underline text-grey-darker hover:underline">{{ $card->name }}</a>
+                                </p>
+                            @endforeach
+                        @else 
+                            <p class="text-grey-darkest">There are no cards using this power.</p>
+                        @endif
+                   </div>
+                </div>
             </div>
             @can ('update', $power)
                 <div class="border-t flex justify-between bg-white py-4 px-8 rounded-b">

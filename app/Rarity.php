@@ -16,7 +16,7 @@ class Rarity extends Model
     /**
      * A rarity belongs to many cards
      *
-     * @return belongsToMany
+     * @return hasMany
      */
     public function cards()
     {

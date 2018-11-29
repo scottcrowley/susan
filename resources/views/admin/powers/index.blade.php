@@ -9,7 +9,9 @@
                     <div class="w-full md:w-1/3 lg:w-1/4 md:px-2 mb-4">
                         <div class="border border-grey p-4" style="height: 256px;">
                             <p class="title">
-                                {{ $power->name }}
+                                <a href="{{ route('admin.powers.show', $power->id) }}">
+                                    {{ $power->name }}
+                                </a>
                             </p>
                             <p>{{ $power->description }}</p>
                         </div>

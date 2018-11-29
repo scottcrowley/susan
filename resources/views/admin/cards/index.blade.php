@@ -9,7 +9,9 @@
                     <div class="w-full md:w-1/3 lg:w-1/4 md:px-2 mb-4">
                         <div class="border border-grey p-4" style="height: 256px;">
                             <p class="title">
-                                {{ $card->name }}
+                                <a href="{{ route('admin.cards.show', $card->id) }}">
+                                    {{ $card->name }}
+                                </a>
                             </p>
                         </div>
                     </div>

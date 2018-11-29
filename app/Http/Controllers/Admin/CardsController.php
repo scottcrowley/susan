@@ -19,7 +19,13 @@ class CardsController extends Controller
      */
     public function index()
     {
-        $cards = Card::orderBy('name')->get();
+        $cards = Card::orderBy('name');
+
+        if (request()->has('by')) {
+            $cards->by();
+        }
+
+        $cards = $cards->get();
 
         return view('admin.cards.index', compact('cards'));
     }

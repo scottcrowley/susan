@@ -146,4 +146,18 @@ class CardsTest extends TestCase
         $this->json('delete', route('admin.cards.delete', $card->id))
             ->assertStatus(403);
     }
+
+    /** @test */
+    public function a_user_can_view_all_cards_by_a_given_username()
+    {
+        $this->signIn(create('App\User', ['name' => 'JohnDoe']));
+
+        $cardByJohn = create('App\Card', ['user_id' => auth()->id()]);
+
+        $cardNotByJohn = create('App\Card');
+
+        $this->get(route('admin.cards.index', ['by' => 'JohnDoe']))
+            ->assertSee($cardByJohn->name)
+            ->assertDontSee($cardNotByJohn->name);
+    }
 }

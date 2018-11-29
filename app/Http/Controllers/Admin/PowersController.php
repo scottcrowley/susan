@@ -61,7 +61,8 @@ class PowersController extends Controller
      */
     public function show(Power $power)
     {
-        return view('admin.powers.show', compact('power'));
+        $cards = $power->cards;
+        return view('admin.powers.show', compact('power', 'cards'));
     }
 
     /**

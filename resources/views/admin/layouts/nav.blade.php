@@ -37,6 +37,9 @@
                 <a slot="link" class="no-underline hover:underline text-grey-darker pr-3 text-sm dropdown-toggle" href="#">Cards</a>
                 <div slot="dropdown-items" class="w-32 mt-px mr-3 bg-white border border-grey rounded-b p-3">
                     <a href="{{ route('admin.cards.index') }}" class="block mb-2 text-right no-underline hover:underline text-grey-darker text-sm">Show All</a>
+                    @if (auth()->check())
+                        <a href="{{ route('admin.cards.index', ['by' => auth()->user()->name]) }}" class="block mb-2 text-right no-underline hover:underline text-grey-darker text-sm">Show My Cards</a>
+                    @endif
                     <a href="{{ route('admin.cards.create') }}" class="block text-right no-underline hover:underline text-grey-darker text-sm">Create New</a>
                 </div>
             </dropdown>

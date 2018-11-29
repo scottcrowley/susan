@@ -21,7 +21,7 @@
                     </form>
                     <delete-confirm-button classes="btn" label="Delete" table="cards" :data-set="{{ $card }}">
                         <span slot="title">Are you sure?</span>
-                        Are you sure you want to do delete this card? This action is not undoable.
+                        Are you sure you want to do delete this card? You can not undo this action.
                     </delete-confirm-button>
                 </div>
             @endcan
