@@ -118,4 +118,34 @@ class PowersController extends Controller
 
         return redirect(route('admin.powers.index'));
     }
+
+    /**
+     * Make the power inactive
+     *
+     * @param Power $power
+     * @return void
+     */
+    public function makeInactive(Power $power)
+    {
+        $power->makeInactive();
+
+        if (request()->wantsJson()) {
+            return response([], 204);
+        }
+    }
+
+    /**
+     * Make the power active
+     *
+     * @param Power $power
+     * @return void
+     */
+    public function makeActive(Power $power)
+    {
+        $power->makeActive();
+
+        if (request()->wantsJson()) {
+            return response([], 204);
+        }
+    }
 }

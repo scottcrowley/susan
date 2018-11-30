@@ -31,6 +31,8 @@ Route::group([
     Route::post('/cards', 'CardsController@store')->name('admin.cards.store');
     Route::get('/cards/{card}', 'CardsController@show')->name('admin.cards.show');
     Route::get('/cards/{card}/edit', 'CardsController@edit')->name('admin.cards.edit')->middleware('can:update,card');
+    Route::get('/cards/{card}/inactive', 'CardsController@makeInactive')->name('admin.cards.inactive')->middleware('can:update,card');
+    Route::get('/cards/{card}/active', 'CardsController@makeActive')->name('admin.cards.active')->middleware('can:update,card');
     Route::patch('/cards/{card}', 'CardsController@update')->name('admin.cards.update')->middleware('can:update,card');
     Route::delete('/cards/{card}', 'CardsController@destroy')->name('admin.cards.delete')->middleware('can:update,card');
 
@@ -39,6 +41,8 @@ Route::group([
     Route::post('/powers', 'PowersController@store')->name('admin.powers.store');
     Route::get('/powers/{power}', 'PowersController@show')->name('admin.powers.show');
     Route::get('/powers/{power}/edit', 'PowersController@edit')->name('admin.powers.edit')->middleware('can:update,power');
+    Route::get('/powers/{power}/inactive', 'PowersController@makeInactive')->name('admin.powers.inactive')->middleware('can:update,power');
+    Route::get('/powers/{power}/active', 'PowersController@makeActive')->name('admin.powers.active')->middleware('can:update,power');
     Route::patch('/powers/{power}', 'PowersController@update')->name('admin.powers.update')->middleware('can:update,power');
     Route::delete('/powers/{power}', 'PowersController@destroy')->name('admin.powers.delete')->middleware('can:update,power');
 

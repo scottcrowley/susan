@@ -18,6 +18,7 @@ class CreatePowersTable extends Migration
             $table->unsignedInteger('user_id')->index();
             $table->string('name')->unique();
             $table->string('description');
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

@@ -71,4 +71,44 @@ class Card extends Model
 
         return $query->where('user_id', $user->id);
     }
+
+    /**
+     * getter for whether the card is active or not
+     *
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * Make the current card inactive
+     *
+     * @return this
+     */
+    public function makeInactive()
+    {
+        if ($this->active) {
+            $this->active = false;
+            $this->save();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Make the current card active
+     *
+     * @return this
+     */
+    public function makeActive()
+    {
+        if (! $this->active) {
+            $this->active = true;
+            $this->save();
+        }
+
+        return $this;
+    }
 }

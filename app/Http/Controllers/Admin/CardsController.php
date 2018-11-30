@@ -141,4 +141,34 @@ class CardsController extends Controller
 
         return redirect(route('admin.cards.index'));
     }
+
+    /**
+     * Make the card inactive
+     *
+     * @param Card $card
+     * @return void
+     */
+    public function makeInactive(card $card)
+    {
+        $card->makeInactive();
+
+        if (request()->wantsJson()) {
+            return response([], 204);
+        }
+    }
+
+    /**
+     * Make the card active
+     *
+     * @param Card $card
+     * @return void
+     */
+    public function makeActive(card $card)
+    {
+        $card->makeActive();
+
+        if (request()->wantsJson()) {
+            return response([], 204);
+        }
+    }
 }

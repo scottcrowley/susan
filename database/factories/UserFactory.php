@@ -41,6 +41,7 @@ $factory->define(App\Power::class, function (Faker $faker) {
         },
         'name' => $faker->unique()->name,
         'description' => $faker->sentence(),
+        'active' => true
     ];
 });
 

@@ -44,4 +44,66 @@ class CardTest extends TestCase
             $this->card->power
         );
     }
+
+    /** @test */
+    public function a_card_can_provide_its_active_status()
+    {
+        $this->signIn();
+
+        $card = create('App\Card', ['active' => false]);
+
+        $this->assertEquals($card->isActive(), false);
+    }
+
+    /** @test */
+    public function a_card_can_be_made_inactive_by_its_creator()
+    {
+        $this->signIn();
+
+        $card = create('App\Card', ['user_id' => auth()->id()]);
+
+        $this->assertEquals($card->isActive(), true);
+
+        $this->json('get', route('admin.cards.inactive', $card->id))
+            ->assertStatus(204);
+
+        $this->assertEquals($card->fresh()->isActive(), false);
+    }
+
+    /** @test */
+    public function a_card_can_not_be_made_inactive_if_the_user_isnt_the_creator()
+    {
+        $this->signIn();
+
+        $card = create('App\Card');
+
+        $this->assertEquals($card->isActive(), true);
+
+        $this->get(route('admin.cards.inactive', $card->id))
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    public function a_card_can_be_made_active_by_its_creator()
+    {
+        $this->signIn();
+
+        $card = create('App\Card', ['user_id' => auth()->id(), 'active' => false]);
+
+        $this->json('get', route('admin.cards.active', $card->id))
+            ->assertStatus(204);
+
+        $this->assertEquals($card->fresh()->isActive(), true);
+    }
+
+    /** @test */
+    public function a_card_can_not_be_made_active_if_the_user_isnt_the_creator()
+    {
+        $this->signIn();
+
+        $card = create('App\Card', ['active' => false]);
+
+        $this->get(route('admin.cards.active', $card->id))
+            ->assertStatus(403);
+    }
 }

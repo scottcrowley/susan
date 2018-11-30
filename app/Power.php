@@ -14,6 +14,15 @@ class Power extends Model
     protected $guarded = [];
 
     /**
+    * The attributes that should be cast to native types.
+    *
+    * @var array
+    */
+    protected $casts = [
+        'active' => 'boolean',
+    ];
+
+    /**
      * A rarity belongs to many cards
      *
      * @return hasMany
@@ -21,5 +30,45 @@ class Power extends Model
     public function cards()
     {
         return $this->hasMany(Card::class);
+    }
+
+    /**
+     * getter for whether the power is active or not
+     *
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * Make the current power inactive
+     *
+     * @return this
+     */
+    public function makeInactive()
+    {
+        if ($this->active) {
+            $this->active = false;
+            $this->save();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Make the current power active
+     *
+     * @return this
+     */
+    public function makeActive()
+    {
+        if (! $this->active) {
+            $this->active = true;
+            $this->save();
+        }
+
+        return $this;
     }
 }
