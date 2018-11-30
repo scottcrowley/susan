@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Filters\CardFilters;
 use Illuminate\Database\Eloquent\Model;
 
 class Card extends Model
@@ -59,17 +60,29 @@ class Card extends Model
         return $this->belongsTo(Power::class);
     }
 
-    /**
-     * Query scope to filter cards by a given username
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return void
-     */
-    public function scopeBy($query)
-    {
-        $user = User::whereName(request('by'))->firstOrFail();
+    // /**
+    //  * Query scope to filter cards by a given username
+    //  *
+    //  * @param \Illuminate\Database\Eloquent\Builder $query
+    //  * @return void
+    //  */
+    // public function scopeBy($query)
+    // {
+    //     $user = User::whereName(request('by'))->firstOrFail();
 
-        return $query->where('user_id', $user->id);
+    //     return $query->where('user_id', $user->id);
+    // }
+
+    /**
+     * Apply all relevant card filters.
+     *
+     * @param  Builder       $query
+     * @param  CardFilters $filters
+     * @return Builder
+     */
+    public function scopeFilter($query, CardFilters $filters)
+    {
+        return $filters->apply($query);
     }
 
     /**

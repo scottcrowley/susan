@@ -10,7 +10,7 @@
             <div class="bg-white p-4">
                 <p class="mb-2 text-grey-darkest">Description: {{ $power->description }}</p>
                 <div class="flex">
-                   <p class="mb-2 text-grey-darkest mr-2">Cards using:</p>
+                   <p class="mb-2 text-grey-darkest mr-2">Cards:</p>
                    <div class="flex-1">
                         @if (count($cards))
                             @foreach ($cards as $card)

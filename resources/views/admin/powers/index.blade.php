@@ -18,7 +18,7 @@
                     </div>
                 @endforeach
             @else
-                <h3 class="text-center">There are currently no Powers available.</h3>
+                <p class="flex-1 title text-center">There are currently no Powers available.</p>
             @endif
         </div>
     </div>

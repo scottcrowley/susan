@@ -160,4 +160,30 @@ class CardsTest extends TestCase
             ->assertSee($cardByJohn->name)
             ->assertDontSee($cardNotByJohn->name);
     }
+
+    /** @test */
+    public function a_user_can_display_only_active_cards()
+    {
+        $this->signIn();
+
+        $activeCard = create('App\Card');
+        $inactiveCard = create('App\Card', ['active' => false]);
+
+        $this->get(route('admin.cards.index', ['active' => 1]))
+            ->assertSee($activeCard->name)
+            ->assertDontSee($inactiveCard->name);
+    }
+
+    /** @test */
+    public function a_user_can_display_only_inactive_cards()
+    {
+        $this->signIn();
+
+        $activeCard = create('App\Card');
+        $inactiveCard = create('App\Card', ['active' => false]);
+
+        $this->get(route('admin.cards.index', ['inactive' => 1]))
+            ->assertDontSee($activeCard->name)
+            ->assertSee($inactiveCard->name);
+    }
 }

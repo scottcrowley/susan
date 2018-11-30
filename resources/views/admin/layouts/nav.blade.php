@@ -51,14 +51,6 @@
                     <a href="{{ route('admin.powers.create') }}" class="block text-right no-underline hover:underline text-grey-darker text-sm">Create New</a>
                 </div>
             </dropdown>
-
-            <dropdown>
-                <a slot="link" class="no-underline hover:underline text-grey-darker pr-3 text-sm dropdown-toggle" href="#">Rarity</a>
-                <div slot="dropdown-items" class="w-32 mt-px mr-3 bg-white border border-grey rounded-b p-3">
-                    <a href="{{ route('admin.rarities.index') }}" class="block mb-2 text-right no-underline hover:underline text-grey-darker text-sm">Show All</a>
-                    <a href="{{ route('admin.rarities.create') }}" class="block text-right no-underline hover:underline text-grey-darker text-sm">Create New</a>
-                </div>
-            </dropdown>
         </div>
     </div>
 </nav>

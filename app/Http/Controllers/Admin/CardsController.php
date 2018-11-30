@@ -6,6 +6,7 @@ use App\Card;
 use App\Power;
 use App\Rarity;
 use App\Rules\Positive;
+use App\Filters\CardFilters;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
@@ -15,17 +16,12 @@ class CardsController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  CardFilters  $filters
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(CardFilters $filters)
     {
-        $cards = Card::orderBy('name');
-
-        if (request()->has('by')) {
-            $cards->by();
-        }
-
-        $cards = $cards->get();
+        $cards = $this->getCards($filters);
 
         return view('admin.cards.index', compact('cards'));
     }
@@ -140,6 +136,19 @@ class CardsController extends Controller
         }
 
         return redirect(route('admin.cards.index'));
+    }
+
+    /**
+     * Fetch all relevant cards.
+     *
+     * @param CardFilters $filters
+     * @return mixed
+     */
+    protected function getCards(CardFilters $filters)
+    {
+        $cards = Card::orderBy('name')->filter($filters)->get();
+
+        return $cards;
     }
 
     /**
