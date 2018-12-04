@@ -60,19 +60,6 @@ class Card extends Model
         return $this->belongsTo(Power::class);
     }
 
-    // /**
-    //  * Query scope to filter cards by a given username
-    //  *
-    //  * @param \Illuminate\Database\Eloquent\Builder $query
-    //  * @return void
-    //  */
-    // public function scopeBy($query)
-    // {
-    //     $user = User::whereName(request('by'))->firstOrFail();
-
-    //     return $query->where('user_id', $user->id);
-    // }
-
     /**
      * Apply all relevant card filters.
      *
