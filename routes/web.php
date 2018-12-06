@@ -20,6 +20,14 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group([
+    'prefix' => 'api',
+    'middleware' => 'auth',
+    'namespace' => 'Api'
+], function () {
+    Route::post('/initialize', 'GamesController@store')->name('api.initialize');
+});
+
+Route::group([
     'prefix' => 'admin',
     'middleware' => 'auth',
     'namespace' => 'Admin'

@@ -72,3 +72,36 @@ $factory->state(App\Card::class, 'mysql', function ($faker) {
         'rarity_id' => $rarities[$k]['id']
     ];
 });
+
+$factory->define(App\Game::class, function (Faker $faker) {
+    // 2 player game meta
+    $john = factory('App\User')->create(['name' => 'John Doe']);
+    $jane = factory('App\User')->create(['name' => 'Jane Doe']);
+    $meta = json_encode([
+        'initialized_by' => $john->id,
+        'max_players' => config('susan.max_players'),
+        'rules' => [
+            'starting_card_count' => config('susan.starting_card_count')
+        ],
+        'players' => [
+            snake_case($john->name) => [
+                'id' => $john->id,
+                'starting_cards' => [
+                ],
+                'won' => false
+            ],
+            snake_case($jane->name) => [
+                'id' => $jane->id,
+                'starting_cards' => [
+                ],
+                'won' => false
+            ]
+        ]
+    ]);
+
+    return [
+        'user_id' => $john->id,
+        'meta' => $meta,
+        'active' => true
+    ];
+});
