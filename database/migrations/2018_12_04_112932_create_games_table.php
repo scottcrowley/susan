@@ -17,7 +17,9 @@ class CreateGamesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id')->index();
             $table->json('meta')->nullable();
-            $table->boolean('active')->default(true);
+            $table->unsignedInteger('winner')->nullable();
+            $table->boolean('completed')->default(false);
+            $table->boolean('archived')->default(false);
             $table->timestamps();
         });
     }

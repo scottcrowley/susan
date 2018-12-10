@@ -25,6 +25,8 @@ Route::group([
     'namespace' => 'Api'
 ], function () {
     Route::post('/initialize', 'GamesController@store')->name('api.initialize');
+    Route::get('/complete/{game}', 'GamesController@complete')->name('api.complete');
+    Route::get('/archive/{game}', 'GamesController@archive')->name('api.archive');
 });
 
 Route::group([

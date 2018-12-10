@@ -77,31 +77,37 @@ $factory->define(App\Game::class, function (Faker $faker) {
     // 2 player game meta
     $john = factory('App\User')->create(['name' => 'John Doe']);
     $jane = factory('App\User')->create(['name' => 'Jane Doe']);
-    $meta = json_encode([
-        'initialized_by' => $john->id,
-        'max_players' => config('susan.max_players'),
+    $meta = [
         'rules' => [
+            'min_players' => config('susan.min_players'),
+            'max_players' => config('susan.max_players'),
             'starting_card_count' => config('susan.starting_card_count')
         ],
         'players' => [
-            snake_case($john->name) => [
-                'id' => $john->id,
+            $john->id => [
+                'name' => $john->name,
                 'starting_cards' => [
-                ],
-                'won' => false
+                ]
             ],
-            snake_case($jane->name) => [
-                'id' => $jane->id,
+            $jane->id => [
+                'name' => $jane->name,
                 'starting_cards' => [
-                ],
-                'won' => false
+                ]
             ]
         ]
-    ]);
+    ];
 
     return [
         'user_id' => $john->id,
         'meta' => $meta,
-        'active' => true
+        'winner' => null,
+        'completed' => false,
+        'archived' => false
+    ];
+});
+
+$factory->state(App\Game::class, 'completed', function ($faker) {
+    return [
+        'completed' => true
     ];
 });
