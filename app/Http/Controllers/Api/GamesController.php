@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Game;
+use App\User;
 use App\Http\Controllers\Controller;
 
 class GamesController extends Controller
@@ -24,7 +25,7 @@ class GamesController extends Controller
         ]);
 
         if (request()->wantsJson()) {
-            return $game;
+            return $newGame;
         }
 
         return back();
@@ -56,6 +57,24 @@ class GamesController extends Controller
     public function archive(Game $game)
     {
         $game->update(['archived' => true]);
+
+        if (request()->wantsJson()) {
+            return response($game, 200);
+        }
+
+        return back();
+    }
+
+    /**
+     * mark a game won by a given player
+     *
+     * @param Game $game
+     * @param User $player
+     * @return void
+     */
+    public function winner(Game $game, User $player)
+    {
+        $game->update(['winner_id' => $player->id, 'completed' => true]);
 
         if (request()->wantsJson()) {
             return response($game, 200);

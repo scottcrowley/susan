@@ -27,6 +27,7 @@ Route::group([
     Route::post('/initialize', 'GamesController@store')->name('api.initialize');
     Route::get('/complete/{game}', 'GamesController@complete')->name('api.complete');
     Route::get('/archive/{game}', 'GamesController@archive')->name('api.archive');
+    Route::post('/game/{game}/{player}', 'GamesController@winner')->name('api.winner');
 });
 
 Route::group([

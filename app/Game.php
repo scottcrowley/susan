@@ -53,4 +53,14 @@ class Game extends Model
     {
         return $this->archived;
     }
+
+    /**
+     * A game belongs to one winner
+     *
+     * @return belongsTo
+     */
+    public function winner()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

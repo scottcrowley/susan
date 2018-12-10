@@ -20,8 +20,9 @@ class GameTest extends TestCase
         $game = json_encode($this->generateGameMeta($john, [$john, $jane]));
 
         $response = $this->json('post', route('api.initialize'), ['players' => [$john, $jane]]);
+        $newGame = parseResponse($response);
 
-        $this->assertEquals($game, $response->getContent());
+        $this->assertEquals($game, $newGame['meta']);
     }
 
     /** @test */
