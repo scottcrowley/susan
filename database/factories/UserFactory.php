@@ -75,8 +75,8 @@ $factory->state(App\Card::class, 'mysql', function ($faker) {
 
 $factory->define(App\Game::class, function (Faker $faker) {
     // 2 player game meta
-    $john = factory('App\User')->create(['name' => 'John Doe']);
-    $jane = factory('App\User')->create(['name' => 'Jane Doe']);
+    $p1 = factory('App\User')->create();
+    $p2 = factory('App\User')->create();
     $meta = [
         'rules' => [
             'min_players' => config('susan.min_players'),
@@ -84,23 +84,26 @@ $factory->define(App\Game::class, function (Faker $faker) {
             'starting_card_count' => config('susan.starting_card_count')
         ],
         'players' => [
-            $john->id => [
-                'name' => $john->name,
+            $p1->id => [
+                'name' => $p1->name,
                 'starting_cards' => [
                 ]
             ],
-            $jane->id => [
-                'name' => $jane->name,
+            $p2->id => [
+                'name' => $p2->name,
                 'starting_cards' => [
                 ]
             ]
         ]
     ];
 
+    $now = \Carbon\Carbon::now();
+
     return [
-        'user_id' => $john->id,
+        'name' => $p1->name.' vs. '.$p2->name.' - '.$now->format('D, M jS, Y h:i A'),
+        'user_id' => $p1->id,
         'meta' => $meta,
-        'winner' => null,
+        'winner_id' => null,
         'completed' => false,
         'archived' => false
     ];

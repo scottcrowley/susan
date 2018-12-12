@@ -11,6 +11,23 @@ class GamesTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
+    public function a_user_can_view_all_non_archived_games()
+    {
+        $this->withoutExceptionHandling();
+        $this->signIn($john = create('App\User', ['name' => 'JohnDoe']));
+        $jane = create('App\User', ['name' => 'JaneDoe']);
+
+        $game = $this->json('post', route('api.initialize'), ['players' => [$john, $jane]]);
+
+        $now = \Carbon\Carbon::now()->format('D, M jS, Y h:i A');
+
+        $name = $john->name.' vs. '.$jane->name.' - '.$now;
+
+        $this->get(route('games.index'))
+            ->assertSee($name);
+    }
+
+    /** @test */
     public function a_game_can_have_a_winner()
     {
         $this->withoutExceptionHandling();

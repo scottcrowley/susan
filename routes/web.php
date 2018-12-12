@@ -17,7 +17,13 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::group([
+    'prefix' => 'games',
+    'middleware' => 'auth',
+], function () {
+    Route::get('/', 'GameController@index')->name('games.index');
+    Route::get('/create', 'GameController@create')->name('games.setup');
+});
 
 Route::group([
     'prefix' => 'api',

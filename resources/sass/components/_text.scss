@@ -41,3 +41,19 @@ p {
         }
     }
 }
+
+a.btn {
+    @apply .no-underline .text-center;
+
+    &:hover {
+        @apply .no-underline;
+    }
+}
+
+.item-list {
+    &:hover {
+        & p {
+            @apply .text-grey-darkest;
+        }
+    }
+}

@@ -16,6 +16,7 @@ class CreateGamesTable extends Migration
         Schema::create('games', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id')->index();
+            $table->string('name');
             $table->json('meta')->nullable();
             $table->unsignedInteger('winner_id')->nullable();
             $table->boolean('completed')->default(false);

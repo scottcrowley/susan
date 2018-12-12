@@ -17,10 +17,11 @@ class GamesController extends Controller
             'players' => 'required|min:'.$min.'|max:'.$max
         ]);
 
-        $game = json_encode($this->initializeGame($data));
+        $game = $this->initializeGame($data);
 
         $newGame = Game::create([
             'user_id' => auth()->id(),
+            'name' => $this->calculateName($data['players']),
             'meta' => $game
         ]);
 
@@ -102,5 +103,20 @@ class GamesController extends Controller
         }
 
         return $game;
+    }
+
+    public function calculateName($players)
+    {
+        $name = $username = auth()->user()->name;
+
+        foreach ($players as $player) {
+            if ($player['name'] == $username) {
+                continue;
+            }
+            $name .= ' vs. '.$player['name'];
+        }
+
+        $now = \Carbon\Carbon::now()->format('D, M jS, Y h:i A');
+        return $name.' - '.$now;
     }
 }

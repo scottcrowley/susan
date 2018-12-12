@@ -17,7 +17,7 @@ class GameTest extends TestCase
         $this->signIn($john = create('App\User', ['name' => 'John Doe']));
         $jane = create('App\User', ['name' => 'Jane Doe']);
 
-        $game = json_encode($this->generateGameMeta($john, [$john, $jane]));
+        $game = $this->generateGameMeta($john, [$john, $jane]);
 
         $response = $this->json('post', route('api.initialize'), ['players' => [$john, $jane]]);
         $newGame = parseResponse($response);

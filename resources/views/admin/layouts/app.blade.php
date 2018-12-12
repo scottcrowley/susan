@@ -23,7 +23,7 @@
     
     @yield('head')
 </head>
-<body class="bg-blue-lightest h-screen antialiased">
+<body class="bg-blue-lightest h-screen antialiased font-sans">
     <div id="app" v-cloak>
         @include('admin.layouts.nav')
 
