@@ -14,12 +14,18 @@ class Game extends Model
     protected $guarded = [];
 
     /**
+     * The relationships to always eager-load.
+     *
+     * @var array
+     */
+    protected $with = ['winner', 'players'];
+
+    /**
      * attributes that should be cast to native values
      *
      * @var array
      */
     protected $casts = [
-        'meta' => 'json',
         'completed' => 'boolean',
         'archived' => 'boolean',
     ];
@@ -31,7 +37,7 @@ class Game extends Model
      */
     public function creator()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**
@@ -62,5 +68,28 @@ class Game extends Model
     public function winner()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * A game can have many players.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function players()
+    {
+        return $this->hasMany(GameUser::class, 'game_id');
+    }
+
+    /**
+     * addPlayer
+     *
+     * @param int $userId
+     * @return void
+     */
+    public function addPlayer($userId)
+    {
+        $this->players()->create([
+            'user_id' => $userId
+        ]);
     }
 }

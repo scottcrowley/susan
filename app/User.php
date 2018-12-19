@@ -31,4 +31,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Card::class);
     }
+
+    public function won()
+    {
+        return $this->hasMany(Game::class, 'winner_id');
+    }
 }

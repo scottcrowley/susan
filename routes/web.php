@@ -22,7 +22,7 @@ Route::group([
     'middleware' => 'auth',
 ], function () {
     Route::get('/', 'GameController@index')->name('games.index');
-    Route::get('/create', 'GameController@create')->name('games.setup');
+    Route::get('/create', 'GameController@create')->name('games.create');
 });
 
 Route::group([
@@ -33,7 +33,7 @@ Route::group([
     Route::post('/initialize', 'GamesController@store')->name('api.initialize');
     Route::get('/complete/{game}', 'GamesController@complete')->name('api.complete');
     Route::get('/archive/{game}', 'GamesController@archive')->name('api.archive');
-    Route::post('/game/{game}/{player}', 'GamesController@winner')->name('api.winner');
+    Route::post('/winner/{game}/{player}', 'GamesController@winner')->name('api.winner');
 });
 
 Route::group([

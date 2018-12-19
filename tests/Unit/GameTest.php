@@ -17,12 +17,12 @@ class GameTest extends TestCase
         $this->signIn($john = create('App\User', ['name' => 'John Doe']));
         $jane = create('App\User', ['name' => 'Jane Doe']);
 
-        $game = $this->generateGameMeta($john, [$john, $jane]);
+        $response = $this->json('post', route('api.initialize'), ['players' => [$john, $jane]])
+            ->assertStatus(200);
 
-        $response = $this->json('post', route('api.initialize'), ['players' => [$john, $jane]]);
         $newGame = parseResponse($response);
 
-        $this->assertEquals($game, $newGame['meta']);
+        $this->assertCount(2, $newGame['players']);
     }
 
     /** @test */
@@ -95,24 +95,19 @@ class GameTest extends TestCase
         $this->assertTrue($game->isArchived());
     }
 
-    public function generateGameMeta($creator, $players)
+    /** @test */
+    public function a_game_has_details_about_a_winning_user()
     {
-        $game = [
-            'rules' => [
-                'min_players' => config('susan.min_players'),
-                'max_players' => config('susan.max_players'),
-                'starting_card_count' => config('susan.starting_card_count')
-            ],
-            'players' => []
-        ];
+        $this->withoutExceptionHandling();
 
-        foreach ($players as $player) {
-            $game['players'][$player->id] = [
-                'name' => $player->name,
-                'starting_cards' => []
-            ];
-        }
+        $this->signIn();
+        $game = createGame();
+        $winner = $game->players[1]->player;
 
-        return $game;
+        $response = $this->json('post', route('api.winner', [$game->id, $winner->id]));
+
+        $winnerDetails = $game->fresh()->winner;
+
+        $this->assertEquals($winnerDetails->name, $winner->name);
     }
 }

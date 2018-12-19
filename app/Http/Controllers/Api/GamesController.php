@@ -17,16 +17,19 @@ class GamesController extends Controller
             'players' => 'required|min:'.$min.'|max:'.$max
         ]);
 
-        $game = $this->initializeGame($data);
+        $players = $data['players'];
 
         $newGame = Game::create([
             'user_id' => auth()->id(),
-            'name' => $this->calculateName($data['players']),
-            'meta' => $game
+            'name' => $this->calculateName($players)
         ]);
 
+        foreach ($players as $player) {
+            $newGame->addPlayer($player['id']);
+        }
+
         if (request()->wantsJson()) {
-            return $newGame;
+            return $newGame->fresh();
         }
 
         return back();
@@ -43,7 +46,7 @@ class GamesController extends Controller
         $game->update(['completed' => true]);
 
         if (request()->wantsJson()) {
-            return response($game, 200);
+            return $game;
         }
 
         return back();
@@ -82,27 +85,6 @@ class GamesController extends Controller
         }
 
         return back();
-    }
-
-    public function initializeGame($data)
-    {
-        $game = [
-            'rules' => [
-                'min_players' => config('susan.min_players'),
-                'max_players' => config('susan.max_players'),
-                'starting_card_count' => config('susan.starting_card_count')
-            ],
-            'players' => []
-        ];
-
-        foreach ($data['players'] as $player) {
-            $game['players'][$player['id']] = [
-                'name' => $player['name'],
-                'starting_cards' => []
-            ];
-        }
-
-        return $game;
     }
 
     public function calculateName($players)

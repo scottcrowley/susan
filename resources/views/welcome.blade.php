@@ -8,7 +8,7 @@
                 {{ config('app.name', 'Laravel') }}
             </h1>
         </div>
-        <a href="/games" class="btn is-blue w-1/2 text-center">Let's Begin...</a>
+        <a href="{{ route('games.index') }}" class="btn is-blue w-1/2 text-center">Let's Begin...</a>
     </div>
 </div>
 @endsection
